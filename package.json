@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "InboxBridge - Post-signup inbox redirect tool",
   "scripts": {
-    "start": "npx serve . -l $PORT -s --no-clipboard"
+    "start": "npx serve . -l $PORT -s --no-clipboard",
+    "build": "echo 'No build step required'"
   },
   "engines": {
     "node": ">=18"
