@@ -1,0 +1,11 @@
+{
+  "name": "inboxbridge",
+  "version": "1.0.0",
+  "description": "InboxBridge - Post-signup inbox redirect tool",
+  "scripts": {
+    "start": "npx serve . -l $PORT -s --no-clipboard"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

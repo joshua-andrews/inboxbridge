@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Your Inbox — Nerdwax</title>
+    <meta
+      name="description"
+      content="You're in! Open your inbox to claim your free gift from Nerdwax."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://nerdwax.com/cdn/shop/files/NWFavicon.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ==================== RESET & BASE ==================== */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* ==================== CARD ==================== */
+      .card {
+        max-width: 480px;
+        width: 100%;
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 48px 36px 40px;
+        text-align: center;
+        box-shadow:
+          0 4px 24px rgba(0, 0, 0, 0.06),
+          0 1px 2px rgba(0, 0, 0, 0.04);
+        animation: fadeUp 0.5s ease-out;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ==================== LOGO ==================== */
+      .brand-logo {
+        display: block;
+        margin: 0 auto 28px;
+        max-width: 160px;
+        height: auto;
+      }
+
+      /* ==================== TEXT ==================== */
+      .headline {
+        font-size: 28px;
+        font-weight: 800;
+        color: #232323;
+        margin-bottom: 8px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+      }
+
+      .subtext {
+        font-size: 16px;
+        font-weight: 400;
+        color: #6b7280;
+        margin-bottom: 36px;
+        line-height: 1.5;
+      }
+
+      /* ==================== DETECTING STATE ==================== */
+      .detecting {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 0;
+      }
+
+      .detecting-text {
+        font-size: 15px;
+        color: #9ca3af;
+        font-weight: 500;
+      }
+
+      .spinner {
+        width: 32px;
+        height: 32px;
+        border: 3px solid #e5e7eb;
+        border-top-color: #232323;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ==================== BUTTONS ==================== */
+      .inbox-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .inbox-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 16px 28px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .inbox-btn .icon-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+      }
+
+      .inbox-btn .icon-wrap svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      /* Primary (detected) button */
+      .inbox-btn.primary {
+        background: #232323;
+        color: #ffffff;
+        box-shadow: 0 4px 14px rgba(35, 35, 35, 0.3);
+      }
+
+      .inbox-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(35, 35, 35, 0.4);
+      }
+
+      .inbox-btn.primary:active {
+        transform: translateY(0);
+      }
+
+      /* Secondary (other options) buttons */
+      .inbox-btn.secondary {
+        background: transparent;
+        color: #232323;
+        border: 2px solid #e5e7eb;
+      }
+
+      .inbox-btn.secondary:hover {
+        border-color: #232323;
+        background: #fafafa;
+      }
+
+      /* When all buttons are equal (unknown domain) */
+      .inbox-btn.equal {
+        background: #232323;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(35, 35, 35, 0.15);
+      }
+
+      .inbox-btn.equal:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(35, 35, 35, 0.25);
+      }
+
+      /* ==================== DETECTED BADGE ==================== */
+      .detected-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f0fdf4;
+        color: #16a34a;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+      }
+
+      .detected-badge svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* ==================== DIVIDER ==================== */
+      .other-options-label {
+        font-size: 13px;
+        color: #9ca3af;
+        font-weight: 500;
+        margin: 20px 0 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      /* ==================== REDIRECT NOTICE ==================== */
+      .redirect-notice {
+        margin-top: 24px;
+        padding: 14px 20px;
+        background: #f9fafb;
+        border-radius: 12px;
+        font-size: 13px;
+        color: #6b7280;
+        line-height: 1.5;
+      }
+
+      .redirect-notice a {
+        color: #232323;
+        font-weight: 600;
+        text-decoration: underline;
+      }
+
+      /* ==================== RESPONSIVE ==================== */
+      @media (max-width: 520px) {
+        body {
+          padding: 12px;
+        }
+
+        .card {
+          padding: 36px 24px 32px;
+          border-radius: 16px;
+        }
+
+        .headline {
+          font-size: 24px;
+        }
+
+        .subtext {
+          font-size: 15px;
+          margin-bottom: 28px;
+        }
+
+        .inbox-btn {
+          padding: 14px 24px;
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card" id="mainCard">
+      <!-- Logo -->
+      <img
+        src="https://cdn.shopify.com/s/files/1/2398/3757/files/nerdwaxlogo-1200px_98ae87cb-b3f5-456e-83a3-f3ffe094748e.png"
+        alt="Nerdwax"
+        class="brand-logo"
+      />
+
+      <!-- Headline -->
+      <h1 class="headline">Welcome to the Land of the Nerdles 🤓</h1>
+      <p class="subtext">Check your email for your free gift!</p>
+
+      <!-- Content area — JS will populate this -->
+      <div id="contentArea">
+        <div class="detecting">
+          <div class="spinner"></div>
+          <span class="detecting-text">Finding your inbox...</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        // ==================== CONFIG ====================
+        const SENDER_EMAIL = "thenerds@nerdwax.com";
+        const REDIRECT_DELAY = 1500; // ms before auto-redirect
+
+        // ==================== PROVIDER MAP ====================
+        const PROVIDERS = {
+          gmail: {
+            name: "Gmail",
+            domains: ["gmail.com", "googlemail.com"],
+            color: "#EA4335",
+            webUrl: `https://mail.google.com/mail/u/0/#search/from%3A${encodeURIComponent(SENDER_EMAIL)}`,
+            mobileUrl: `googlegmail:///search/from:${encodeURIComponent(SENDER_EMAIL)}`,
+            icon: `<svg viewBox="0 0 24 24" fill="#EA4335"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>`,
+          },
+          outlook: {
+            name: "Outlook",
+            domains: [
+              "outlook.com",
+              "hotmail.com",
+              "live.com",
+              "msn.com",
+              "outlook.co.uk",
+              "hotmail.co.uk",
+            ],
+            color: "#0078D4",
+            webUrl: `https://outlook.live.com/mail/0/inbox?search=${encodeURIComponent(SENDER_EMAIL)}`,
+            mobileUrl: `ms-outlook://search?query=${encodeURIComponent(SENDER_EMAIL)}`,
+            icon: `<svg viewBox="0 0 24 24" fill="#0078D4"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>`,
+          },
+          apple: {
+            name: "Apple Mail",
+            domains: ["icloud.com", "me.com", "mac.com"],
+            color: "#007AFF",
+            webUrl: "https://www.icloud.com/mail",
+            mobileUrl: "message://", // iOS Mail app
+            icon: `<svg viewBox="0 0 24 24"><rect x="0" y="0" width="24" height="24" rx="6" fill="#007AFF"/><path fill="white" d="M18 7H6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm0 2l-6 3.5L6 9v-.5l6 3.5 6-3.5V9z" transform="translate(0, 1)"/></svg>`,
+          },
+          yahoo: {
+            name: "Yahoo Mail",
+            domains: [
+              "yahoo.com",
+              "yahoo.co.uk",
+              "yahoo.co.in",
+              "ymail.com",
+              "rocketmail.com",
+            ],
+            color: "#6001D2",
+            webUrl: `https://mail.yahoo.com/d/search/keyword=${encodeURIComponent(SENDER_EMAIL)}`,
+            mobileUrl: `ymail://search?query=${encodeURIComponent(SENDER_EMAIL)}`,
+            icon: `<svg viewBox="0 0 24 24" fill="#6001D2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c.83 0 1.5.67 1.5 1.5S12.83 8 12 8s-1.5-.67-1.5-1.5S11.17 5 12 5zm-2 12v-1h1v-4h-1v-1h3v5h1v1h-4zm2-8.5l3.5-3.5L17 6.5 13.5 10h-3L7 6.5 8.5 5 12 8.5z"/></svg>`,
+          },
+        };
+
+        // ==================== UTILITIES ====================
+        function isMobile() {
+          return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent,
+          );
+        }
+
+        function getEmailParam() {
+          const params = new URLSearchParams(window.location.search);
+          return (params.get("email") || "").trim().toLowerCase();
+        }
+
+        function getDomain(email) {
+          const parts = email.split("@");
+          return parts.length === 2 ? parts[1] : null;
+        }
+
+        function detectProvider(domain) {
+          if (!domain) return null;
+          for (const [key, provider] of Object.entries(PROVIDERS)) {
+            if (provider.domains.includes(domain)) {
+              return { key, ...provider };
+            }
+          }
+          return null;
+        }
+
+        function getRedirectUrl(provider) {
+          if (isMobile()) {
+            return provider.mobileUrl;
+          }
+          return provider.webUrl;
+        }
+
+        function getFallbackUrl(provider) {
+          return provider.webUrl;
+        }
+
+        // ==================== BUTTON HTML ====================
+        function createButton(provider, style) {
+          return `
+                    <a href="${provider.webUrl}" 
+                       class="inbox-btn ${style}" 
+                       data-mobile-url="${provider.mobileUrl}"
+                       data-web-url="${provider.webUrl}"
+                       data-provider="${provider.key || ""}"
+                       onclick="handleClick(event, this)">
+                        <span class="icon-wrap">${provider.icon}</span>
+                        <span>Open ${provider.name}</span>
+                    </a>`;
+        }
+
+        // ==================== RENDER ====================
+        function renderDetected(detected) {
+          const contentArea = document.getElementById("contentArea");
+          const others = Object.entries(PROVIDERS)
+            .filter(([key]) => key !== detected.key)
+            .map(([key, p]) => ({ key, ...p }));
+
+          contentArea.innerHTML = `
+                    <div class="detected-badge">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                        <span>${detected.name} detected</span>
+                    </div>
+                    <div class="inbox-buttons">
+                        ${createButton(detected, "primary")}
+                    </div>
+                    <p class="other-options-label">Other options</p>
+                    <div class="inbox-buttons">
+                        ${others.map((p) => createButton(p, "secondary")).join("")}
+                    </div>
+                    <div class="redirect-notice" id="redirectNotice">
+                        Opening ${detected.name} in <span id="countdown">3</span>s... 
+                        <a href="#" onclick="cancelRedirect(event)">Cancel</a>
+                    </div>
+                `;
+        }
+
+        function renderUnknown() {
+          const contentArea = document.getElementById("contentArea");
+          const allProviders = Object.entries(PROVIDERS).map(([key, p]) => ({
+            key,
+            ...p,
+          }));
+
+          contentArea.innerHTML = `
+                    <div class="inbox-buttons">
+                        ${allProviders.map((p) => createButton(p, "equal")).join("")}
+                    </div>
+                `;
+        }
+
+        // ==================== AUTO-REDIRECT ====================
+        let redirectTimer = null;
+        let countdownInterval = null;
+
+        function startAutoRedirect(provider) {
+          let seconds = 3;
+          const countdownEl = document.getElementById("countdown");
+
+          countdownInterval = setInterval(() => {
+            seconds--;
+            if (countdownEl) countdownEl.textContent = seconds;
+            if (seconds <= 0) clearInterval(countdownInterval);
+          }, 1000);
+
+          redirectTimer = setTimeout(() => {
+            clearInterval(countdownInterval);
+            performRedirect(provider);
+          }, 3000);
+        }
+
+        function cancelRedirect(e) {
+          e.preventDefault();
+          if (redirectTimer) clearTimeout(redirectTimer);
+          if (countdownInterval) clearInterval(countdownInterval);
+          const notice = document.getElementById("redirectNotice");
+          if (notice) notice.style.display = "none";
+        }
+
+        function performRedirect(provider) {
+          if (isMobile()) {
+            // Try mobile deep link first, fallback to web
+            const webUrl = provider.webUrl;
+            const mobileUrl = provider.mobileUrl;
+
+            // Set a timeout — if the app doesn't open, fall back to web
+            const fallbackTimeout = setTimeout(() => {
+              window.location.href = webUrl;
+            }, 800);
+
+            // Listen for page visibility change (app opened successfully)
+            document.addEventListener("visibilitychange", function handler() {
+              if (document.hidden) {
+                clearTimeout(fallbackTimeout);
+                document.removeEventListener("visibilitychange", handler);
+              }
+            });
+
+            window.location.href = mobileUrl;
+          } else {
+            window.location.href = provider.webUrl;
+          }
+        }
+
+        // ==================== CLICK HANDLER (global) ====================
+        window.handleClick = function (e, el) {
+          e.preventDefault();
+          // Cancel any auto-redirect in progress
+          if (redirectTimer) clearTimeout(redirectTimer);
+          if (countdownInterval) clearInterval(countdownInterval);
+
+          const provider = {
+            mobileUrl: el.getAttribute("data-mobile-url"),
+            webUrl: el.getAttribute("data-web-url"),
+          };
+
+          performRedirect(provider);
+        };
+
+        window.cancelRedirect = cancelRedirect;
+
+        // ==================== INIT ====================
+        function init() {
+          const email = getEmailParam();
+          const domain = getDomain(email);
+          const provider = detectProvider(domain);
+
+          if (provider) {
+            // Short delay so user sees the "detecting" animation
+            setTimeout(() => {
+              renderDetected(provider);
+              startAutoRedirect(provider);
+            }, 800);
+          } else {
+            // Unknown domain — show all options
+            setTimeout(() => {
+              renderUnknown();
+            }, 500);
+          }
+        }
+
+        // Go
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+      })();
+    </script>
+  </body>
+</html>
